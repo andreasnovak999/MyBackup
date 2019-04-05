@@ -1,11 +1,16 @@
 package com.jbackup.application.view;
 
 import java.io.File;
+import java.util.Optional;
 
 import com.jbackup.application.MainApp;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 
@@ -31,81 +36,32 @@ public class RootLayoutController {
     }
 
     /**
-     * Creates an empty address book.
+     * Open dialog to enter settings.
      */
     @FXML
-    private void handleNew() {
-        mainApp.getPersonData().clear();
-        mainApp.setPersonFilePath(null);
+    private void handleSettings() {    	
+    	// show dialog
+    	ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
+    	Dialog<ButtonType> dialog = new Dialog<>();
+    	dialog.getDialogPane().getButtonTypes().add(loginButtonType);
+    	boolean disabled = false; // computed based on content of text fields, for example
+    	dialog.getDialogPane().lookupButton(loginButtonType).setDisable(disabled);
+    	
+    	Optional<ButtonType> result = dialog.showAndWait();
+    	if (result.isPresent() && result.get() == ButtonType.OK) {
+    		// todo
+    	}
     }
-
-    /**
-     * Opens a FileChooser to let the user select an address book to load.
-     */
-    @FXML
-    private void handleOpen() {
-        FileChooser fileChooser = new FileChooser();
-
-        // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        // Show open file dialog
-        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-
-        if (file != null) {
-            mainApp.loadPersonDataFromFile(file);
-        }
-    }
-
-    /**
-     * Saves the file to the person file that is currently open. If there is no
-     * open file, the "save as" dialog is shown.
-     */
-    @FXML
-    private void handleSave() {
-        File personFile = mainApp.getPersonFilePath();
-        if (personFile != null) {
-            mainApp.savePersonDataToFile(personFile);
-        } else {
-            handleSaveAs();
-        }
-    }
-
-    /**
-     * Opens a FileChooser to let the user select a file to save to.
-     */
-    @FXML
-    private void handleSaveAs() {
-        FileChooser fileChooser = new FileChooser();
-
-        // Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        // Show save file dialog
-        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-
-        if (file != null) {
-            // Make sure it has the correct extension
-            if (!file.getPath().endsWith(".xml")) {
-                file = new File(file.getPath() + ".xml");
-            }
-            mainApp.savePersonDataToFile(file);
-        }
-    }
-
+    
     /**
      * Opens an about dialog.
      */
     @FXML
     private void handleAbout() {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("AddressApp");
+        alert.setTitle("JBackup");
         alert.setHeaderText("About");
-        alert.setContentText("Author: Marco Jakob\nWebsite: http://code.makery.ch");
+        alert.setContentText("Author: Andreas Novak andreasnovak999@gmail.com");
 
         alert.showAndWait();
     }
