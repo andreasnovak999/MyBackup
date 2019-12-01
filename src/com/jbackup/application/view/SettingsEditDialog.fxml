@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="250.0" maxWidth="300.0" minHeight="250.0" minWidth="300.0" prefHeight="250.0" prefWidth="300.0" styleClass="background" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.PersonEditDialogController">
+<AnchorPane maxHeight="250.0" maxWidth="300.0" minHeight="250.0" minWidth="300.0" prefHeight="250.0" prefWidth="300.0" styleClass="background" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jbackup.application.view.SettingsEditDialogController">
    <children>
       <GridPane AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -25,18 +25,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="First Name" />
-            <Label text="Last Name" GridPane.rowIndex="1" />
-            <Label text="Street" GridPane.rowIndex="2" />
-            <Label text="City" GridPane.rowIndex="3" />
-            <Label text="Postal Code" GridPane.rowIndex="4" />
-            <Label text="Birthday" GridPane.rowIndex="5" />
-            <TextField fx:id="firstNameField" GridPane.columnIndex="1" />
-            <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="streetField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="cityField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="postalCodeField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="birthdayField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Source Path" />
+            <Label text="Backup Path" GridPane.rowIndex="1" />            
+            <TextField fx:id="sourcePath" GridPane.columnIndex="1" />
+            <TextField fx:id="backupPath" GridPane.columnIndex="1" GridPane.rowIndex="1" />            
          </children>
       </GridPane>
       <ButtonBar layoutX="60.0" layoutY="196.0" prefHeight="40.0" prefWidth="226.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="196.0">

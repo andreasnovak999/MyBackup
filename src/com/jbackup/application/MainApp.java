@@ -125,12 +125,6 @@ public class MainApp extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Try to load last opened person file.
-        //File file = getPersonFilePath();
-        //if (file != null) {
-            //loadPersonDataFromFile(file);
-        //}
     }
 
     /**
@@ -138,19 +132,17 @@ public class MainApp extends Application {
      */
     public void showPersonOverview() {
         try {
-            // Load person overview.
+            // load file overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/FileOverview.fxml"));
             AnchorPane fileOverview = (AnchorPane) loader.load();
 
-            // Set person overview into the center of root layout.
+            // set file overview into the center of root layout
             rootLayout.setCenter(fileOverview);
 
-            // Give the controller access to the main app.
+            // give the controller access to the main app
             FileOverviewController controller = loader.getController();
             controller.setMainApp(this);
-            
-
         } catch (IOException e) {
             e.printStackTrace();
         }

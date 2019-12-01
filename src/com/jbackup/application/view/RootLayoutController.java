@@ -1,25 +1,23 @@
 package com.jbackup.application.view;
 
-import java.io.File;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import com.jbackup.application.MainApp;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.FileChooser;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * The controller for the root layout. The root layout provides the basic
  * application layout containing a menu bar and space where other JavaFX
  * elements can be placed.
- *
- * @author Marco Jakob
  */
 public class RootLayoutController {
 
@@ -40,16 +38,31 @@ public class RootLayoutController {
      */
     @FXML
     private void handleSettings() {    	
-    	// show dialog
-    	ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
-    	Dialog<ButtonType> dialog = new Dialog<>();
-    	dialog.getDialogPane().getButtonTypes().add(loginButtonType);
-    	boolean disabled = false; // computed based on content of text fields, for example
-    	dialog.getDialogPane().lookupButton(loginButtonType).setDisable(disabled);
-    	
-    	Optional<ButtonType> result = dialog.showAndWait();
-    	if (result.isPresent() && result.get() == ButtonType.OK) {
-    		// todo
+    	try {
+    		// load the fxml file and create a new stage for the popup dialog
+    		FXMLLoader loader = new FXMLLoader();
+    		loader.setLocation(MainApp.class.getResource("view/SettingsEditDialog.fxml"));
+    		AnchorPane page = (AnchorPane) loader.load();
+
+    		// Create the dialog Stage.
+    		Stage dialogStage = new Stage();
+    		dialogStage.setTitle("Edit Person");
+    		dialogStage.initModality(Modality.WINDOW_MODAL);
+    		dialogStage.initOwner(mainApp.getPrimaryStage());
+    		Scene scene = new Scene(page);
+    		dialogStage.setScene(scene);
+
+    		// Set the person into the controller.
+    		SettingsEditDialogController controller = loader.getController();
+    		controller.setDialogStage(dialogStage);
+    		controller.setPreferences(Preferences.userRoot());
+
+    		// Show the dialog and wait until the user closes it
+    		dialogStage.showAndWait();
+
+    		controller.isOkClicked();
+    	} catch (IOException e) {
+    		e.printStackTrace();
     	}
     }
     
