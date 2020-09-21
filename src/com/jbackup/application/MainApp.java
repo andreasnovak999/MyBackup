@@ -26,47 +26,45 @@ public class MainApp extends Application {
 
 	private Stage primaryStage;
     private BorderPane rootLayout;
+    //private Preferences prefs;
 
     /**
      * The data as an observable list of source file data.
      */
     private ObservableList<FileData> sourceFileData = FXCollections.observableArrayList();
-    
+
     /**
      * The data as an observable list of backup file data.
      */
     private ObservableList<FileData> backupFileData = FXCollections.observableArrayList();
-    
+
     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
     /**
      * Constructor
      */
     public MainApp() {
+    	//this.prefs = Preferences.userRoot();
         // Fill source file list
-    	File folder = new File("E:\\");
-        List<String> sourceResult = new ArrayList<>();
-        search(folder, sourceResult, 0);
+    	File folder = new File("D:\\");
+        search(folder, sourceFileData);
         System.out.println("total source files: " + sourceFileData.size());
-        
+
         // Fill backup file list
-        folder = new File("D:\\");
-        List<String> backupResult = new ArrayList<>();
-        search(folder, backupResult, 1);
+        // folder = new File(prefs.get("backupPath", "F:\\Backup_21_09_2020\\"));//prefs.get("backupPath", ""));
+        folder = new File("F:\\Backup_21_09_2020\\");//prefs.get("backupPath", ""));
+        search(folder, backupFileData);
         System.out.println("total backup files: " + backupFileData.size());
     }
-    
-	private void search(final File folder, List<String> result, int type) {
+
+	private void search(final File folder, ObservableList<FileData> fileData) {
 		try {
 			for (final File f : folder.listFiles(f -> !f.getName().toLowerCase().startsWith("$"))) {
 				if (f != null) {
 					if (f.isDirectory())
-						search(f, result, type);
+						search(f, fileData);
 					if (f.isFile())
-						if (type == 0)
-							sourceFileData.add(new FileData(f.getPath(), String.valueOf(f.length()), sdf.format(f.lastModified()), f.lastModified()));
-						else
-							backupFileData.add(new FileData(f.getPath(), String.valueOf(f.length()), sdf.format(f.lastModified()), f.lastModified()));
+							fileData.add(new FileData(f.getPath(), String.valueOf(f.length()), sdf.format(f.lastModified()), f.lastModified()));
 				}
 			}
 		} catch (Exception ex) {
@@ -81,7 +79,7 @@ public class MainApp extends Application {
     public ObservableList<FileData> getSourceFileData() {
         return sourceFileData;
     }
-    
+
     /**
      * Returns the data as an list of backup files.
      * @return
@@ -100,7 +98,7 @@ public class MainApp extends Application {
 
         initRootLayout();
 
-        showPersonOverview();
+        showFileOverview();
 	}
 
     /**
@@ -128,9 +126,9 @@ public class MainApp extends Application {
     }
 
     /**
-     * Shows the person overview inside the root layout.
+     * Shows the file overview inside the root layout.
      */
-    public void showPersonOverview() {
+    public void showFileOverview() {
         try {
             // load file overview.
             FXMLLoader loader = new FXMLLoader();
@@ -149,87 +147,11 @@ public class MainApp extends Application {
     }
 
     /**
-     * Opens a dialog to edit details for the specified person. If the user
-     * clicks OK, the changes are saved into the provided person object and true
-     * is returned.
-     *
-     * @param person the person object to be edited
-     * @return true if the user clicked OK, false otherwise.
-     */
-//    public boolean showPersonEditDialog(Person person) {
-//        try {
-//            // Load the fxml file and create a new stage for the popup dialog.
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(MainApp.class.getResource("view/PersonEditDialog.fxml"));
-//            AnchorPane page = (AnchorPane) loader.load();
-//
-//            // Create the dialog Stage.
-//            Stage dialogStage = new Stage();
-//            dialogStage.setTitle("Edit Person");
-//            dialogStage.initModality(Modality.WINDOW_MODAL);
-//            dialogStage.initOwner(primaryStage);
-//            Scene scene = new Scene(page);
-//            dialogStage.setScene(scene);
-//
-//            // Set the person into the controller.
-//            PersonEditDialogController controller = loader.getController();
-//            controller.setDialogStage(dialogStage);
-//            controller.setPerson(person);
-//
-//            // Show the dialog and wait until the user closes it
-//            dialogStage.showAndWait();
-//
-//            return controller.isOkClicked();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-
-    /**
      * Returns the main stage.
      * @return
      */
     public Stage getPrimaryStage() {
         return primaryStage;
-    }
-
-    /**
-     * Returns the person file preference, i.e. the file that was last opened.
-     * The preference is read from the OS specific registry. If no such
-     * preference can be found, null is returned.
-     *
-     * @return
-     */
-    public File getPersonFilePath() {
-        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
-        String filePath = prefs.get("filePath", null);
-        if (filePath != null) {
-            return new File(filePath);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Sets the file path of the currently loaded file. The path is persisted in
-     * the OS specific registry.
-     *
-     * @param file the file or null to remove the path
-     */
-    public void setPersonFilePath(File file) {
-        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
-        if (file != null) {
-            prefs.put("filePath", file.getPath());
-
-            // Update the stage title.
-            primaryStage.setTitle("AddressApp - " + file.getName());
-        } else {
-            prefs.remove("filePath");
-
-            // Update the stage title.
-            primaryStage.setTitle("AddressApp");
-        }
     }
 
 	public static void main(String[] args) {

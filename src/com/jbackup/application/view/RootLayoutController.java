@@ -37,35 +37,35 @@ public class RootLayoutController {
      * Open dialog to enter settings.
      */
     @FXML
-    private void handleSettings() {    	
-    	try {
-    		// load the fxml file and create a new stage for the popup dialog
-    		FXMLLoader loader = new FXMLLoader();
-    		loader.setLocation(MainApp.class.getResource("view/SettingsEditDialog.fxml"));
-    		AnchorPane page = (AnchorPane) loader.load();
-
-    		// Create the dialog Stage.
-    		Stage dialogStage = new Stage();
-    		dialogStage.setTitle("Edit Person");
-    		dialogStage.initModality(Modality.WINDOW_MODAL);
-    		dialogStage.initOwner(mainApp.getPrimaryStage());
-    		Scene scene = new Scene(page);
-    		dialogStage.setScene(scene);
-
-    		// Set the person into the controller.
-    		SettingsEditDialogController controller = loader.getController();
-    		controller.setDialogStage(dialogStage);
-    		controller.setPreferences(Preferences.userRoot());
-
-    		// Show the dialog and wait until the user closes it
-    		dialogStage.showAndWait();
-
-    		controller.isOkClicked();
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
+    private void handleSettings() {
+//    	try {
+//    		// load the fxml file and create a new stage for the popup dialog
+//    		FXMLLoader loader = new FXMLLoader();
+//    		loader.setLocation(MainApp.class.getResource("view/SettingsEditDialog.fxml"));
+//    		AnchorPane page = (AnchorPane) loader.load();
+//
+//    		// Create the dialog Stage.
+//    		Stage dialogStage = new Stage();
+//    		dialogStage.setTitle("Edit Person");
+//    		dialogStage.initModality(Modality.WINDOW_MODAL);
+//    		dialogStage.initOwner(mainApp.getPrimaryStage());
+//    		Scene scene = new Scene(page);
+//    		dialogStage.setScene(scene);
+//
+//    		// Set the person into the controller.
+//    		SettingsEditDialogController controller = loader.getController();
+//    		controller.setDialogStage(dialogStage);
+//    		controller.setPreferences(Preferences.userRoot());
+//
+//    		// Show the dialog and wait until the user closes it
+//    		dialogStage.showAndWait();
+//
+//    		controller.isOkClicked();
+//    	} catch (IOException e) {
+//    		e.printStackTrace();
+//    	}
     }
-    
+
     /**
      * Opens an about dialog.
      */

@@ -1,6 +1,7 @@
 package com.jbackup.application.view;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import com.jbackup.application.MainApp;
 import com.jbackup.application.model.FileData;
@@ -73,7 +74,7 @@ public class FileOverviewController {
         // Add observable list data to the table
         sourceFileTable.setItems(mainApp.getSourceFileData());
         backupFileTable.setItems(mainApp.getBackupFileData());
-        
+
         sourceLabel.setText("SOURCE files: " + mainApp.getSourceFileData().size());
         backupLabel.setText("BACKUP files: " + mainApp.getBackupFileData().size());
     }
@@ -87,7 +88,7 @@ public class FileOverviewController {
     	ArrayList<FileData> filesToBackup = new ArrayList<FileData>();
     	ObservableList<FileData> backupFileList = mainApp.getBackupFileData();
     	for (FileData sourceFileData : mainApp.getSourceFileData()) {
-    		if (!backupFileList.contains(sourceFileData)) { 
+    		if (!backupFileList.contains(sourceFileData)) {
     			filesToBackup.add(sourceFileData);
     			System.out.println("backup file: " + sourceFileData.getPath());
     		}
@@ -96,7 +97,7 @@ public class FileOverviewController {
     			System.out.println("backup file: " + sourceFileData.getPath());
     		}
     	}
-    	
+
     	// show compare result
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.initOwner(mainApp.getPrimaryStage());
@@ -104,14 +105,20 @@ public class FileOverviewController {
 		alert.setHeaderText("Files to backup: " + filesToBackup.size());
 		((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Start Backup");
 		((Button) alert.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("Cancel");
-		
+
 		// show files to backup
 //		StringBuilder sb = new StringBuilder();
 //		for (FileData fileToBackup : filesToBackup) {
-//			sb.append(fileToBackup.getPath() + " " + fileToBackup.getChangeDate() + System.lineSeparator());	
+//			sb.append(fileToBackup.getPath() + " " + fileToBackup.getChangeDate() + System.lineSeparator());
 //		}
 //		alert.setContentText(sb.toString());
 
-		alert.showAndWait();
-    }    
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent()) {
+			if (result.get() == ButtonType.OK)
+				System.out.println("Ok pressed");
+			else if (result.get() == ButtonType.CANCEL)
+				System.out.println("Cancel pressed");
+		}
+    }
 }
